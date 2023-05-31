@@ -28,7 +28,7 @@ class ProductModel {
         image: json['image'],
         id: json['id'],
         name: json['name'],
-        price: json['price'],
+        price: json['price'].toString(),
         description: json['description'],
         status: json['status'],
         isFavorite: false,

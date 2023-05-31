@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: kToolbarHeight,),
               const TopTitle(
                   title: 'Login', subtitle: "Welcome Back to E-Commerce app"),
               const SizedBox(

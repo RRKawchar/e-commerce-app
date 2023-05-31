@@ -1,7 +1,16 @@
+import 'package:e_commerce_app/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 ThemeData themeData=ThemeData(
   primaryColor: Colors.indigo,
+  outlinedButtonTheme: OutlinedButtonThemeData(
+    style: OutlinedButton.styleFrom(
+        padding:  const EdgeInsets.symmetric(horizontal: 20),
+        side:  const BorderSide(
+            color: primaryColor
+        )
+    ),
+  ),
   inputDecorationTheme: InputDecorationTheme(
     suffixIconColor: Colors.grey,
     prefixIconColor: Colors.grey,
@@ -18,6 +27,15 @@ ThemeData themeData=ThemeData(
       backgroundColor: Colors.indigo,
       textStyle:const TextStyle(fontSize: 18.0),
       disabledBackgroundColor: Colors.grey
+    )
+  ),
+  canvasColor: primaryColor,
+  primarySwatch: Colors.indigo,
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.white,
+    elevation: 0.0,
+    iconTheme: IconThemeData(
+      color: Colors.black
     )
   )
 );

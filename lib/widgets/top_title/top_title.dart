@@ -9,9 +9,6 @@ class TopTitle extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: kToolbarHeight,
-        ),
        if(title=="Login" || title=='Create Account')
         InkWell(
             onTap: (){
