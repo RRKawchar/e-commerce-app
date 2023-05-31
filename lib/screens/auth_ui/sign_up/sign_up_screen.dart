@@ -1,5 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:e_commerce_app/constants/assets_images.dart';
+import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/constants/routes.dart';
+import 'package:e_commerce_app/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:e_commerce_app/screens/auth_ui/login/login_screen.dart';
 import 'package:e_commerce_app/screens/home/home_screen.dart';
 import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
@@ -15,6 +19,10 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isShowPass = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,13 +39,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Center(
                   child: Image.asset(
-                    AssetsImages.signuplogo,
-                    width: 150,
-                  )),
+                AssetsImages.signuplogo,
+                width: 150,
+              )),
               const SizedBox(
                 height: 40.0,
               ),
               TextFormField(
+                controller: nameController,
                 decoration: const InputDecoration(
                     hintText: "Name",
                     prefixIcon: Icon(
@@ -49,6 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 12,
               ),
               TextFormField(
+                controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                     hintText: "E-mail",
@@ -61,6 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 12,
               ),
               TextFormField(
+                controller: phoneController,
                 keyboardType: TextInputType.phone,
                 decoration: const InputDecoration(
                     hintText: "Phone",
@@ -73,6 +84,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 12,
               ),
               TextFormField(
+                controller: passwordController,
                 obscureText: isShowPass,
                 decoration: InputDecoration(
                     hintText: "Password",
@@ -86,15 +98,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             isShowPass = !isShowPass;
                           });
                         },
-                        icon: isShowPass?const Icon(Icons.visibility):const Icon(Icons.visibility_off))),
+                        icon: isShowPass
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off))),
               ),
               const SizedBox(
                 height: 12.0,
               ),
               PrimaryButton(
                 title: 'Create Account',
-                onPressed: () {
-                  Routes.push(context: context, page: const HomeScreen());
+                onPressed: () async {
+                  bool isValid = signUpValidation(
+                      emailController.text,
+                      passwordController.text,
+                      nameController.text,
+                      phoneController.text);
+                  if (isValid) {
+                    bool isSignUp = await FirebaseAuthHelper.instance.signUp(
+                        email: emailController.text,
+                        password: passwordController.text,
+                        context: context);
+                    if(isSignUp){
+                      Routes.pushAndRemoveUntil(context: context, page:const HomeScreen());
+                    }
+                  }
                 },
               ),
               const SizedBox(
