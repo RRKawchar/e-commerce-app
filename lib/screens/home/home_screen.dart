@@ -1,11 +1,10 @@
-import 'package:e_commerce_app/constants/colors.dart';
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
 import 'package:e_commerce_app/model/categories_model/categories_model.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/screens/category_view/category_view.dart';
 import 'package:e_commerce_app/screens/home/components/categories_widget.dart';
 import 'package:e_commerce_app/screens/home/components/popular_product_widget.dart';
-import 'package:e_commerce_app/screens/product_details/product_details_screen.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:e_commerce_app/widgets/top_title/top_title.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: categoriesList.map((category) {
-                                return CategoriesWidget(categoriesModel: category);
+                                return InkWell(
+                                   onTap: (){
+                                     Routes.push(context: context, page: CategoryView(categoriesModel: category));
+                                   },
+                                    child: CategoriesWidget(categoriesModel: category));
                               }).toList(),
                             ),
                           ),
@@ -127,12 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisSpacing: 5),
                         itemBuilder: (context, index) {
                           ProductModel product = productList[index];
-                          return GestureDetector(
-                            onTap: (){
-                              Routes.push(context: context, page: ProductDetailsScreen(productModel: product));
-                            },
-                            child: PopularProductWidget(productModel: product,)
-                          );
+                          return PopularProductWidget(productModel: product,);
                         }),
                     const SizedBox(height: 12.0,),
                   ],

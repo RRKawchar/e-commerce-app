@@ -32,6 +32,7 @@ ThemeData themeData=ThemeData(
   canvasColor: primaryColor,
   primarySwatch: Colors.indigo,
   appBarTheme: const AppBarTheme(
+    toolbarTextStyle: TextStyle(color: Colors.black),
     backgroundColor: Colors.white,
     elevation: 0.0,
     iconTheme: IconThemeData(

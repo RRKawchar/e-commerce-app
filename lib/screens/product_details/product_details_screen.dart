@@ -1,4 +1,6 @@
+import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/screens/cart_screen/cart_screen.dart';
 import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,7 +24,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () {}, icon: const Icon(Icons.shopping_cart_rounded))
+              onPressed: () {
+                Routes.push(context: context, page: const CartScreen());
+              }, icon: const Icon(Icons.shopping_cart_rounded))
         ],
       ),
       body: Padding(
@@ -72,7 +76,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                    padding: EdgeInsets.zero,
                    onPressed: (){
                     setState(() {
-                      if(qty>=1){
+                      if(qty>1){
                         qty--;
                       }
                     });

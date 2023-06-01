@@ -1,4 +1,6 @@
+import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/screens/product_details/product_details_screen.dart';
 import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +35,9 @@ class PopularProductWidget extends StatelessWidget {
               height: 10,
             ),
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Routes.push(context: context, page: ProductDetailsScreen(productModel: productModel));
+              },
               child: const CustomText(
                 text: "Buy now",
               ),
