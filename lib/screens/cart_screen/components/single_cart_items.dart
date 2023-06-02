@@ -1,18 +1,30 @@
 import 'package:e_commerce_app/constants/colors.dart';
+import 'package:e_commerce_app/constants/constants.dart';
+import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SingleCartItems extends StatefulWidget {
-  const SingleCartItems({Key? key}) : super(key: key);
+  final ProductModel productModel;
+  const SingleCartItems({Key? key, required this.productModel})
+      : super(key: key);
 
   @override
   State<SingleCartItems> createState() => _SingleCartItemsState();
 }
 
 class _SingleCartItemsState extends State<SingleCartItems> {
-  int qty=1;
+  int qty = 1;
+
+  @override
+  void initState() {
+    qty=widget.productModel.qty??1;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,76 +32,113 @@ class _SingleCartItemsState extends State<SingleCartItems> {
       height: 130,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color: primaryColor.withOpacity(0.5),
-              width: 2
-          )
-      ),
+          border: Border.all(color: primaryColor.withOpacity(0.5), width: 2)),
       child: Row(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 120,
-            child: CustomNetWorkImage(image: "https://www.aptronixindia.com/media/catalog/product/i/p/iphone1164gbpurple_2.png",height: 120,width: 100,),
+            child: CustomNetWorkImage(
+              image: widget.productModel.image,
+              height: 120,
+              width: 100,
+            ),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 2,top: 10,right: 6),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.only(left: 2, top: 10, right: 6),
+              child: Stack(
+                alignment: Alignment.bottomRight,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const CustomText(text: "Iphone 11 pro max",maxLine: 2,size: 15,fontWeight: FontWeight.w600,),
-                        Row(
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            CustomText(
+                              text: widget.productModel.name,
+                              maxLine: 2,
+                              size: 15,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            Row(
+                              children: [
+                                CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    setState(() {
+                                      if (qty > 1) {
+                                        qty--;
+                                      }
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    maxRadius: 12,
+                                    child: Icon(
+                                      Icons.remove,
+                                      size: 17,
+                                    ),
+                                  ),
+                                ),
+                                CustomText(
+                                  text: qty.toString(),
+                                  size: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                                CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () {
+                                    setState(() {
+                                      qty++;
+                                    });
+                                  },
+                                  child: const CircleAvatar(
+                                    maxRadius: 12,
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 17,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: (){
-                                setState(() {
-                                  if(qty>1){
-                                    qty--;
-                                  }
-                                });
-                              },
-                              child: const CircleAvatar(
-                                maxRadius: 12,
-                                child: Icon(Icons.remove,size: 17,),
+                              onPressed: () {},
+                              child: const CustomText(
+                                text: "Add To WishList",
+                                color: primaryColor,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                            CustomText(text: qty.toString(),size: 20,fontWeight: FontWeight.w500,),
-                            CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              onPressed: (){
-                                setState(() {
-
-                                  qty++;
-
-                                });
-                              },
-                              child: const CircleAvatar(
-                                maxRadius: 12,
-                                child: Icon(Icons.add,size: 17,),
-                              ),
-                            ),
-
                           ],
                         ),
-
-
-                        CupertinoButton(
-                            onPressed: (){
-
-                            },
-                            child: const CustomText(text: "Add To WishList",color: primaryColor,fontWeight: FontWeight.w500,))
-
-                      ],
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      CustomText(
+                        text: "\$${widget.productModel.price}",
+                        size: 18,
+                        fontWeight: FontWeight.w700,
+                      )
+                    ],
+                  ),
+                   Positioned(
+                    bottom: 2,
+                    right: 2,
+                    child: CupertinoButton(
+                      onPressed: (){
+                        AppProvider appProvider=Provider.of<AppProvider>(context,listen: false);
+                        appProvider.removeCartProvider(widget.productModel);
+                        showMessage(message: 'Remove from cart');
+                      },
+                      child: const CircleAvatar(
+                          radius: 12,
+                          child: Icon(Icons.delete)),
                     ),
                   ),
-                  const SizedBox(width: 10,),
-                  const CustomText(text: "\$344",size: 18,fontWeight: FontWeight.w700,)
                 ],
               ),
             ),

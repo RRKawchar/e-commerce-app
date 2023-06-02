@@ -13,6 +13,8 @@ class ProductModel {
   String description;
   String status;
   bool isFavorite;
+  int? qty;
+
 
   ProductModel({
     required this.image,
@@ -22,6 +24,7 @@ class ProductModel {
     required this.description,
     required this.status,
     required this.isFavorite,
+    this.qty,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -30,6 +33,7 @@ class ProductModel {
         name: json['name'],
         price: json['price'].toString(),
         description: json['description'],
+        qty: json['qty'],
         status: json['status'],
         isFavorite: false,
       );
@@ -39,8 +43,24 @@ class ProductModel {
         "name": name,
         "image": image,
         "price": price,
+         "qty":qty,
         "description": description,
         "status": status,
         "isFavorite": isFavorite,
       };
+
+  ProductModel copyWith({
+    int? qty,
+  }) {
+    return ProductModel(
+      image: image,
+      id: id,
+      name:name,
+      price: price,
+      description: description,
+      qty: qty??this.qty,
+      status:status,
+      isFavorite: isFavorite,
+    );
+  }
 }

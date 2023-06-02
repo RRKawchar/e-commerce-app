@@ -1,10 +1,13 @@
+import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen/cart_screen.dart';
 import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel productModel;
@@ -26,7 +29,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           IconButton(
               onPressed: () {
                 Routes.push(context: context, page: const CartScreen());
-              }, icon: const Icon(Icons.shopping_cart_rounded))
+              },
+              icon: const Icon(Icons.shopping_cart_rounded))
         ],
       ),
       body: Padding(
@@ -72,52 +76,66 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
             Row(
               children: [
-                 CupertinoButton(
-                   padding: EdgeInsets.zero,
-                   onPressed: (){
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
                     setState(() {
-                      if(qty>1){
+                      if (qty > 1) {
                         qty--;
                       }
                     });
-                   },
-                   child: const CircleAvatar(
+                  },
+                  child: const CircleAvatar(
                     child: Icon(Icons.remove),
+                  ),
                 ),
-                 ),
                 const SizedBox(
                   width: 12.0,
                 ),
-                CustomText(text: qty.toString(),size: 22,fontWeight: FontWeight.bold,),
+                CustomText(
+                  text: qty.toString(),
+                  size: 22,
+                  fontWeight: FontWeight.bold,
+                ),
                 const SizedBox(
                   width: 12.0,
                 ),
                 CupertinoButton(
                   padding: EdgeInsets.zero,
-                  onPressed: (){
+                  onPressed: () {
                     setState(() {
-
-                        qty++;
-
+                      qty++;
                     });
                   },
                   child: const CircleAvatar(
                     child: Icon(Icons.add),
                   ),
                 ),
-
               ],
             ),
             const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                OutlinedButton(onPressed: (){}, child: const CustomText(text: "Add To Cart",)),
-                const SizedBox(width: 20,),
-                ElevatedButton(onPressed: (){}, child: const Text("Buy Now"))
+                OutlinedButton(
+                    onPressed: () {
+                      AppProvider appProvider=Provider.of<AppProvider>(context,listen: false);
+                      ProductModel productModel=widget.productModel.copyWith(qty: qty);
+                      appProvider.addCartProvider(productModel);
+                      showMessage(message: 'Added To cart');
+                    },
+                    child: const CustomText(
+                      text: "Add To Cart",
+                    )),
+                const SizedBox(
+                  width: 20,
+                ),
+                ElevatedButton(onPressed: () {}, child: const Text("Buy Now"))
               ],
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
