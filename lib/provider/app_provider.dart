@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 
 class AppProvider with ChangeNotifier{
 
-  final List<ProductModel> _catProductList=[];
 
+  /// Cart Provider..........................
+
+  final List<ProductModel> _catProductList=[];
 
   void addCartProvider(ProductModel productModel){
     _catProductList.add(productModel);
@@ -16,4 +18,23 @@ class AppProvider with ChangeNotifier{
     notifyListeners();
   }
    List<ProductModel> get catProviderList=> _catProductList;
+
+
+
+  /// Favorite Provider.........................
+
+  final List<ProductModel> _favoriteProductList=[];
+
+
+  void addFavoriteProvider(ProductModel productModel){
+    _favoriteProductList.add(productModel);
+    notifyListeners();
+  }
+
+  void removeFavoriteProvider(ProductModel productModel){
+    _favoriteProductList.remove(productModel);
+    notifyListeners();
+  }
+  List<ProductModel> get getFavoriteList=> _favoriteProductList;
+
 }

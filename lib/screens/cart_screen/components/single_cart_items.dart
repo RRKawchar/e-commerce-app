@@ -27,6 +27,7 @@ class _SingleCartItemsState extends State<SingleCartItems> {
   }
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider=Provider.of<AppProvider>(context);
     return Container(
       margin: const EdgeInsets.only(bottom: 12.0),
       height: 130,
@@ -106,8 +107,8 @@ class _SingleCartItemsState extends State<SingleCartItems> {
                             ),
                             CupertinoButton(
                               onPressed: () {},
-                              child: const CustomText(
-                                text: "Add To WishList",
+                              child: CustomText(
+                                text:appProvider.getFavoriteList.contains(widget.productModel)? "Add To WishList":"Remove To WishList",
                                 color: primaryColor,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -130,7 +131,6 @@ class _SingleCartItemsState extends State<SingleCartItems> {
                     right: 2,
                     child: CupertinoButton(
                       onPressed: (){
-                        AppProvider appProvider=Provider.of<AppProvider>(context,listen: false);
                         appProvider.removeCartProvider(widget.productModel);
                         showMessage(message: 'Remove from cart');
                       },
