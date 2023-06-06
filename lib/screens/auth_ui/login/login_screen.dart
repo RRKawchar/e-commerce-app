@@ -5,6 +5,7 @@ import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:e_commerce_app/screens/auth_ui/sign_up/sign_up_screen.dart';
+import 'package:e_commerce_app/screens/custom_bottom_bar/custom_bottom_navbar.dart';
 import 'package:e_commerce_app/screens/home/home_screen.dart';
 import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
 import 'package:e_commerce_app/widgets/top_title/top_title.dart';
@@ -90,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       context: context,
                     );
                     if(isLogin){
-                      Routes.pushAndRemoveUntil(context: context, page:const HomeScreen());
+                      Routes.pushAndRemoveUntil(context: context, page:const CustomBottomNavbar());
                     }
                   }
                 },

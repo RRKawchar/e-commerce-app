@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
@@ -35,6 +36,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final size = MediaQuery.of(context).size;
 
     AppProvider appProvider=Provider.of<AppProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -51,6 +53,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+
               CustomNetWorkImage(
                   image: widget.productModel.image,
                   height: 300,
@@ -151,7 +154,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   ElevatedButton(onPressed: () {
 
-                    Routes.push(context: context, page: const FavoriteScreen());
+                    // Routes.push(context: context, page: const FavoriteScreen());
                   }, child: const Text("Buy Now"))
                 ],
               ),

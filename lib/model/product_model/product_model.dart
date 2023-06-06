@@ -28,7 +28,7 @@ class ProductModel {
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        image: json['image'],
+        image: json['image']??"",
         id: json['id'],
         name: json['name'],
         price: json['price'].toString(),

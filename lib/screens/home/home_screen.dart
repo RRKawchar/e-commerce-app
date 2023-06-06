@@ -2,12 +2,14 @@ import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
 import 'package:e_commerce_app/model/categories_model/categories_model.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/category_view/category_view.dart';
 import 'package:e_commerce_app/screens/home/components/categories_widget.dart';
 import 'package:e_commerce_app/screens/home/components/popular_product_widget.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:e_commerce_app/widgets/top_title/top_title.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     getCategories();
+    AppProvider provider=Provider.of<AppProvider>(context,listen: false);
+    provider.getUserInfoFirebase();
     super.initState();
   }
 
@@ -91,10 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Row(
                               children: categoriesList.map((category) {
                                 return InkWell(
-                                   onTap: (){
-                                     Routes.push(context: context, page: CategoryView(categoriesModel: category));
-                                   },
-                                    child: CategoriesWidget(categoriesModel: category));
+                                    onTap: () {
+                                      Routes.push(
+                                          context: context,
+                                          page: CategoryView(
+                                              categoriesModel: category));
+                                    },
+                                    child: CategoriesWidget(
+                                        categoriesModel: category));
                               }).toList(),
                             ),
                           ),
@@ -106,33 +114,37 @@ class _HomeScreenState extends State<HomeScreen> {
                       size: 18,
                       fontWeight: FontWeight.w500,
                     ),
-                     SizedBox(
-                      height:productList.isEmpty? 50:12,
+                    SizedBox(
+                      height: productList.isEmpty ? 50 : 12,
                     ),
 
                     /// Popular Products.............................
 
                     productList.isEmpty
                         ? const Center(
-                      child: CustomText(
-                        text: "Popular Product is Empty!!",
-                      ),
-                    )
+                            child: CustomText(
+                              text: "Popular Product is Empty!!",
+                            ),
+                          )
                         : GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: productList.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisExtent: 230,
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 5),
-                        itemBuilder: (context, index) {
-                          ProductModel product = productList[index];
-                          return PopularProductWidget(productModel: product,);
-                        }),
-                    const SizedBox(height: 12.0,),
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: productList.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    mainAxisExtent: 230,
+                                    crossAxisSpacing: 5,
+                                    mainAxisSpacing: 5),
+                            itemBuilder: (context, index) {
+                              ProductModel product = productList[index];
+                              return PopularProductWidget(
+                                productModel: product,
+                              );
+                            }),
+                    const SizedBox(
+                      height: 12.0,
+                    ),
                   ],
                 ),
               ),
@@ -140,5 +152,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

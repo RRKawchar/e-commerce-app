@@ -1,9 +1,13 @@
+import 'package:e_commerce_app/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
+import 'package:e_commerce_app/model/user_model/user_model.dart';
 import 'package:flutter/cupertino.dart';
 
 class AppProvider with ChangeNotifier{
 
+  UserModel? _userModel;
 
+  UserModel get getUserInformation=> _userModel!;
   /// Cart Provider..........................
 
   final List<ProductModel> _catProductList=[];
@@ -36,5 +40,13 @@ class AppProvider with ChangeNotifier{
     notifyListeners();
   }
   List<ProductModel> get getFavoriteList=> _favoriteProductList;
+
+
+  /// User Information
+void getUserInfoFirebase()async{
+  _userModel=await FirebaseFireStoreHelper.instance.getUserInformation();
+  notifyListeners();
+
+}
 
 }

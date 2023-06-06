@@ -106,11 +106,21 @@ class _SingleCartItemsState extends State<SingleCartItems> {
                               ],
                             ),
                             CupertinoButton(
-                              onPressed: () {},
+                              onPressed: () {
+
+                                if(!appProvider.getFavoriteList.contains(widget.productModel)){
+                                  appProvider.addFavoriteProvider(widget.productModel);
+                                  showMessage(message: 'Added to WishList');
+                                }else{
+                                  appProvider.removeFavoriteProvider(widget.productModel);
+                                  showMessage(message: 'Remove from WishList');
+                                }
+                              },
                               child: CustomText(
-                                text:appProvider.getFavoriteList.contains(widget.productModel)? "Add To WishList":"Remove To WishList",
+                                text:appProvider.getFavoriteList.contains(widget.productModel)? "Remove from WishList":"Add To WishList",
                                 color: primaryColor,
                                 fontWeight: FontWeight.w500,
+                                size: 15,
                               ),
                             ),
                           ],

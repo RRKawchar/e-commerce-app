@@ -35,8 +35,8 @@ class PopularProductWidget extends StatelessWidget {
               height: 10,
             ),
             OutlinedButton(
-              onPressed: () {
-                Routes.push(context: context, page: ProductDetailsScreen(productModel: productModel));
+              onPressed: () async{
+                await Routes.push(context: context, page: ProductDetailsScreen(productModel: productModel));
               },
               child: const CustomText(
                 text: "Buy now",

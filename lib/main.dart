@@ -3,7 +3,7 @@ import 'package:e_commerce_app/firebase_helper/firebase_auth_helper/firebase_aut
 import 'package:e_commerce_app/firebase_helper/firebase_options/firebase_options.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/auth_ui/welcome/welcome_screen.dart';
-import 'package:e_commerce_app/screens/home/home_screen.dart';
+import 'package:e_commerce_app/screens/custom_bottom_bar/custom_bottom_navbar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuthHelper.instance.getAuthChange,
           builder: (context,snapshot){
             if(snapshot.hasData){
-              return const HomeScreen();
+              return const CustomBottomNavbar();
             }else{
               return const WelcomeScreen();
             }
