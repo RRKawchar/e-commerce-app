@@ -1,6 +1,8 @@
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
+import 'package:e_commerce_app/screens/change_password/change_password.dart';
 import 'package:e_commerce_app/screens/edit_profile/edit_profile.dart';
+import 'package:e_commerce_app/screens/favourite/favorite_screen.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -36,9 +38,10 @@ class _AccountScreenState extends State<AccountScreen> {
                         Icons.person_outline,
                         size: 120,
                       )
-                    : Image.network(
-                        provider.getUserInformation.image,
-                      ),
+                    :  CircleAvatar(
+                  radius: 50,
+                  backgroundImage: NetworkImage(provider.getUserInformation.image),
+                ),
                 CustomText(
                   text: provider.getUserInformation.name,
                   size: 22,
@@ -70,7 +73,9 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                     ListTile(
-                      onTap: () {},
+                      onTap: () {
+                        Routes.push(context: context, page:const FavoriteScreen());
+                      },
                       leading: const Icon(Icons.favorite_outline),
                       title: const CustomText(
                         text: "Favorites",
@@ -88,6 +93,15 @@ class _AccountScreenState extends State<AccountScreen> {
                       leading: const Icon(Icons.support_outlined),
                       title: const CustomText(
                         text: "Support",
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        Routes.push(context: context, page:const ChangePassword());
+                      },
+                      leading: const Icon(Icons.change_circle_outlined),
+                      title: const CustomText(
+                        text: "Change Password",
                       ),
                     ),
                     ListTile(

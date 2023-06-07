@@ -1,4 +1,5 @@
 import 'package:e_commerce_app/model/categories_model/categories_model.dart';
+import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:flutter/material.dart';
 
@@ -20,10 +21,7 @@ class CategoriesWidget extends StatelessWidget {
           child: SizedBox(
             height: 100,
             width: 100,
-            child: Image.network(
-              categoriesModel.image.toString(),
-              fit: BoxFit.fill,
-            ),
+            child:CustomNetWorkImage(image: categoriesModel.image.toString(),height:double.infinity,width: double.infinity,)
           ),
         ),
         CustomText(

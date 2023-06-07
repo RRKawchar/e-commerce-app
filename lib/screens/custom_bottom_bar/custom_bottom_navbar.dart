@@ -1,8 +1,8 @@
 import 'package:e_commerce_app/constants/colors.dart';
 import 'package:e_commerce_app/screens/accounts/account_screen.dart';
 import 'package:e_commerce_app/screens/cart_screen/cart_screen.dart';
-import 'package:e_commerce_app/screens/favourite/favorite_screen.dart';
 import 'package:e_commerce_app/screens/home/home_screen.dart';
+import 'package:e_commerce_app/screens/order_scren/order_screen.dart';
 import 'package:flutter/material.dart';
 
 class CustomBottomNavbar extends StatefulWidget {
@@ -16,7 +16,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
   List<Widget> pages = [
     const HomeScreen(),
     const CartScreen(),
-    const FavoriteScreen(),
+    const OrderScreen(),
     const AccountScreen(),
   ];
   int currentIndex = 0;
@@ -43,7 +43,7 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
+          BottomNavigationBarItem(icon: Icon(Icons.circle_outlined), label: "Orders"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         onTap:onTap

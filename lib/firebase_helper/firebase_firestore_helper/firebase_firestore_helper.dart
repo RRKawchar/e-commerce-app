@@ -4,6 +4,7 @@ import 'package:e_commerce_app/model/categories_model/categories_model.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
 import 'package:e_commerce_app/model/user_model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 class FirebaseFireStoreHelper {
   static FirebaseFireStoreHelper instance = FirebaseFireStoreHelper();
@@ -13,7 +14,7 @@ class FirebaseFireStoreHelper {
   Future<List<CategoriesModel>> getCategories() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await _firestore.collection('categories').get();
+          await _firestore.collection('categories').get();
 
       List<CategoriesModel> categoriesList = querySnapshot.docs
           .map((e) => CategoriesModel.fromJson(e.data()))
@@ -29,7 +30,7 @@ class FirebaseFireStoreHelper {
   Future<List<ProductModel>> getPopularProduct() async {
     try {
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await _firestore.collectionGroup('products').get();
+          await _firestore.collectionGroup('products').get();
 
       List<ProductModel> productList = querySnapshot.docs
           .map((e) => ProductModel.fromJson(e.data()))
@@ -42,11 +43,11 @@ class FirebaseFireStoreHelper {
     }
   }
 
-
   Future<List<ProductModel>> getCategoryView(String id) async {
     try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-      await _firestore.collection('categories').doc(id)
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await _firestore
+          .collection('categories')
+          .doc(id)
           .collection('products')
           .get();
 
@@ -62,10 +63,44 @@ class FirebaseFireStoreHelper {
   }
 
   Future<UserModel> getUserInformation() async {
-    DocumentSnapshot<Map<String, dynamic>> querySnapshot =
-    await _firestore.collection('users').doc(
-        FirebaseAuth.instance.currentUser!.uid).get();
+    DocumentSnapshot<Map<String, dynamic>> querySnapshot = await _firestore
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
 
     return UserModel.fromJson(querySnapshot.data()!);
+  }
+
+  /// Upload Order ..........................................
+
+  Future<bool> uploadOrderProductFirebase(
+      List<ProductModel> list, BuildContext context,String payment) async {
+    try {
+      showLoaderDialog(context);
+      double totalPrice = 0.0;
+      for (var element in list) {
+        double price = double.parse(element.price);
+        totalPrice += price * element.qty!;
+      }
+
+      DocumentReference reference = _firestore
+          .collection('UsersOrders')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('orders')
+          .doc();
+      reference.set({
+        'products': list.map((e) => e.toJson()),
+        'status': "Pending",
+        "totalPrice": totalPrice,
+        'payment':payment,
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+      showMessage(message: 'Ordered Successfully');
+      return true;
+    } catch (e) {
+      showMessage(message: e.toString());
+      Navigator.of(context, rootNavigator: true).pop();
+      return false;
+    }
   }
 }

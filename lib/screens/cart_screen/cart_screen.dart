@@ -1,6 +1,9 @@
+import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen/components/single_cart_items.dart';
+import 'package:e_commerce_app/screens/check_out/check_out_screen.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
+import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +19,28 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     AppProvider appProvider=Provider.of<AppProvider>(context);
     return Scaffold(
+        bottomNavigationBar: SizedBox(
+          height: 150,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomText(text: 'Total',fontWeight: FontWeight.bold,size: 18,),
+                    CustomText(text: '\$${appProvider.totalPrice().toString()}',fontWeight: FontWeight.bold,size: 18,),
+                  ],
+                ),
+                const SizedBox(height: 24.0,),
+                PrimaryButton(title: "CheckOut",onPressed: (){
+
+                  // Routes.push(context: context, page:  CheckOutScreen(productModel: null,));
+                },)
+              ],
+            ),
+          ),
+        ),
       appBar: AppBar(
         title: const CustomText(text: 'Cart Screen',size: 20,),
         centerTitle: true,

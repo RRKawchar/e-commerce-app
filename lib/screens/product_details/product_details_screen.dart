@@ -4,6 +4,7 @@ import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen/cart_screen.dart';
+import 'package:e_commerce_app/screens/check_out/check_out_screen.dart';
 import 'package:e_commerce_app/screens/favourite/favorite_screen.dart';
 import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
@@ -153,8 +154,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     width: 20,
                   ),
                   ElevatedButton(onPressed: () {
-
-                    // Routes.push(context: context, page: const FavoriteScreen());
+                    ProductModel productModel=widget.productModel.copyWith(qty: qty);
+                     Routes.push(context: context, page: CheckOutScreen(productModel: productModel,));
                   }, child: const Text("Buy Now"))
                 ],
               ),

@@ -39,9 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
     categoriesList.shuffle();
     productList = await FirebaseFireStoreHelper.instance.getPopularProduct();
     productList.shuffle();
-    setState(() {
-      isLoading = false;
-    });
+   setState(() {
+     isLoading = false;
+   });
+
+
   }
 
   @override

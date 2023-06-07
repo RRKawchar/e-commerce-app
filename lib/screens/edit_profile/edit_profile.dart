@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/firebase_helper/firebase_storage_helper/firebase_storage_helpers.dart';
+import 'package:e_commerce_app/model/user_model/user_model.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
@@ -25,6 +27,8 @@ class _EditProfileState extends State<EditProfile> {
        });
      }
   }
+
+  TextEditingController nameController=TextEditingController();
   @override
   Widget build(BuildContext context) {
     AppProvider provider=Provider.of<AppProvider>(context);
@@ -36,27 +40,35 @@ class _EditProfileState extends State<EditProfile> {
       body: ListView(
         padding:  const EdgeInsets.symmetric(horizontal: 20.0),
         children:  [
-          InkWell(
+          _image==null? InkWell(
+            onTap: (){
+              pickImage();
+            },
+            child: const CircleAvatar(
+              radius: 70,
+              child: Icon(Icons.camera_alt,size: 35,),
+            ),
+          ):InkWell(
             onTap: (){
               pickImage();
             },
             child: CircleAvatar(
               radius: 70,
-              child: _image==null?const Icon(Icons.camera_alt,size: 35,):Image.file(_image!),
+             backgroundImage: FileImage(_image!),
             ),
           ),
           const SizedBox(height: 25.0,),
           TextFormField(
+            controller: nameController,
             decoration: InputDecoration(
-              hintText: provider.getUserInformation.email
+              hintText: provider.getUserInformation.name
             ),
           ),
            const SizedBox(height: 12.0,),
            PrimaryButton(
               onPressed: ()async{
-               final String imageUrl=await FirebaseStorageHelpers.instance.uploadImage(_image!);
-                print("Riyazur Rohman Kawchar");
-                print(imageUrl);
+               UserModel userModel= provider.getUserInformation.copyWith(name: nameController.text);
+               provider.updateUserInfoFirebase(context, userModel, _image);
               },
               title: 'Update')
         ],
