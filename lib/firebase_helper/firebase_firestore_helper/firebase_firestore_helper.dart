@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/model/categories_model/categories_model.dart';
+import 'package:e_commerce_app/model/order_model/order_model.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
 import 'package:e_commerce_app/model/user_model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -74,7 +77,7 @@ class FirebaseFireStoreHelper {
   /// Upload Order ..........................................
 
   Future<bool> uploadOrderProductFirebase(
-      List<ProductModel> list, BuildContext context,String payment) async {
+      List<ProductModel> list, BuildContext context, String payment) async {
     try {
       showLoaderDialog(context);
       double totalPrice = 0.0;
@@ -88,11 +91,12 @@ class FirebaseFireStoreHelper {
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('orders')
           .doc();
-      reference.set({
+      DocumentReference admin=_firestore.collection('orders').doc();
+      admin.set({
         'products': list.map((e) => e.toJson()),
         'status': "Pending",
         "totalPrice": totalPrice,
-        'payment':payment,
+        'payment': payment,
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage(message: 'Ordered Successfully');
@@ -101,6 +105,23 @@ class FirebaseFireStoreHelper {
       showMessage(message: e.toString());
       Navigator.of(context, rootNavigator: true).pop();
       return false;
+    }
+  }
+
+  /// Get Order from firebase////// /// //// /// / ///
+  Future<List<OrderModel>> getOrder() async {
+    try{
+
+      QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('UsersOrders')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('orders')
+          .get();
+      List<OrderModel> orderList=snapshot.docs.map((e) => OrderModel.fromJson(e.data())).toList();
+      return orderList;
+    }catch(e){
+  showMessage(message: e.toString());
+      return [];
     }
   }
 }
