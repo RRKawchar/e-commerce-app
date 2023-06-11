@@ -43,6 +43,8 @@ dependencies:
   cached_network_image: ^3.2.3
   provider: ^6.0.5
   image_picker: ^0.8.7+5
+  firebase_messaging: ^14.6.2
+  flutter_stripe: ^9.2.1
 
 dev_dependencies:
   flutter_test:

@@ -7,6 +7,7 @@ import 'package:e_commerce_app/model/order_model/order_model.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
 import 'package:e_commerce_app/model/user_model/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
 class FirebaseFireStoreHelper {
@@ -97,6 +98,14 @@ class FirebaseFireStoreHelper {
         'status': "Pending",
         "totalPrice": totalPrice,
         'payment': payment,
+        'orderId':admin.id
+      });
+      reference.set({
+        'products': list.map((e) => e.toJson()),
+        'status': "Pending",
+        "totalPrice": totalPrice,
+        'payment': payment,
+        'orderId':reference.id
       });
       Navigator.of(context, rootNavigator: true).pop();
       showMessage(message: 'Ordered Successfully');
@@ -124,4 +133,15 @@ class FirebaseFireStoreHelper {
       return [];
     }
   }
+
+  void updateTokenFromFirebase()async{
+
+    String? token=await FirebaseMessaging.instance.getToken();
+    if(token != null){
+      await _firestore.collection('users').doc(FirebaseAuth.instance.currentUser!.uid).update({
+        "notificationToken":token
+      });
+    }
+  }
+
 }

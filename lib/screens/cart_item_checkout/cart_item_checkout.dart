@@ -1,6 +1,5 @@
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
-import 'package:e_commerce_app/model/product_model/product_model.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/custom_bottom_bar/custom_bottom_navbar.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
@@ -8,16 +7,16 @@ import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CheckOutScreen extends StatefulWidget {
-  final ProductModel productModel;
-  const CheckOutScreen({Key? key, required this.productModel})
+class CartItemCheckOut extends StatefulWidget {
+
+  const CartItemCheckOut({Key? key,})
       : super(key: key);
 
   @override
-  State<CheckOutScreen> createState() => _CheckOutScreenState();
+  State<CartItemCheckOut> createState() => _CartItemCheckOutState();
 }
 
-class _CheckOutScreenState extends State<CheckOutScreen> {
+class _CartItemCheckOutState extends State<CartItemCheckOut> {
   int groupValue = 1;
   @override
   Widget build(BuildContext context) {
@@ -103,12 +102,10 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
             PrimaryButton(
               title: "Continues",
               onPressed: () async {
-                appProvider.clearBuyProduct();
-                appProvider.addBuyProduct(widget.productModel);
                 bool value = await FirebaseFireStoreHelper.instance
                     .uploadOrderProductFirebase(
-                        appProvider.getBuyProductList, context,groupValue==1?"Cash on Delivery":"Paid");
-
+                    appProvider.getBuyProductList, context,groupValue==1?"Cash on Delivery":"Paid");
+                appProvider.clearBuyProduct();
                 if (value) {
                   Future.delayed(const Duration(seconds: 2), () {
                     Routes.push(

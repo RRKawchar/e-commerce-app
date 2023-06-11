@@ -1,7 +1,8 @@
+import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
+import 'package:e_commerce_app/screens/cart_item_checkout/cart_item_checkout.dart';
 import 'package:e_commerce_app/screens/cart_screen/components/single_cart_items.dart';
-import 'package:e_commerce_app/screens/check_out/check_out_screen.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,15 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 const SizedBox(height: 24.0,),
                 PrimaryButton(title: "CheckOut",onPressed: (){
+                  appProvider.clearBuyProduct();
+                  appProvider.addBuyProductCartList();
+                  appProvider.clearCart();
+                  if(appProvider.getBuyProductList.isEmpty){
+                    showMessage(message: "Cart is Empty!!");
+                  }else{
+                    Routes.push(context: context, page:  const CartItemCheckOut());
+                  }
 
-                  // Routes.push(context: context, page:  CheckOutScreen(productModel: null,));
                 },)
               ],
             ),

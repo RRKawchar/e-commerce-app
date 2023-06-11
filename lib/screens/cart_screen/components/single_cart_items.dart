@@ -41,7 +41,7 @@ class _SingleCartItemsState extends State<SingleCartItems> {
             child: CustomNetWorkImage(
               image: widget.productModel.image,
               height: 120,
-              width: 100,
+              width: 120,
             ),
           ),
           Expanded(

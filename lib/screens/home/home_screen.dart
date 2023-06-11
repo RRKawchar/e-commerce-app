@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
+    FirebaseFireStoreHelper.instance.updateTokenFromFirebase();
     categoriesList = await FirebaseFireStoreHelper.instance.getCategories();
     categoriesList.shuffle();
     productList = await FirebaseFireStoreHelper.instance.getPopularProduct();
