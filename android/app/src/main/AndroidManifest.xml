@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.rrk.e_commerce_app">
    <application
-        android:label="e_commerce_app"
+        android:label="Ecommerce Global"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name="com.rrk.e_commerce_app.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/LaunchTheme"
+            android:theme="@style/Theme.AppCompat.Light"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize"

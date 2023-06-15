@@ -1,16 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/custom_bottom_bar/custom_bottom_navbar.dart';
+import 'package:e_commerce_app/stripe_helper/stripe_helper.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:e_commerce_app/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartItemCheckOut extends StatefulWidget {
-
-  const CartItemCheckOut({Key? key,})
-      : super(key: key);
+  const CartItemCheckOut({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CartItemCheckOut> createState() => _CartItemCheckOutState();
@@ -24,7 +27,7 @@ class _CartItemCheckOutState extends State<CartItemCheckOut> {
     return Scaffold(
       appBar: AppBar(
         title: const CustomText(
-          text: 'Check Out',
+          text: 'Cart item Check Out',
         ),
         centerTitle: true,
       ),
@@ -102,16 +105,29 @@ class _CartItemCheckOutState extends State<CartItemCheckOut> {
             PrimaryButton(
               title: "Continues",
               onPressed: () async {
-                bool value = await FirebaseFireStoreHelper.instance
-                    .uploadOrderProductFirebase(
-                    appProvider.getBuyProductList, context,groupValue==1?"Cash on Delivery":"Paid");
-                appProvider.clearBuyProduct();
-                if (value) {
-                  Future.delayed(const Duration(seconds: 2), () {
-                    Routes.push(
-                        context: context, page: const CustomBottomNavbar());
-                  });
+                if (groupValue == 1) {
+                  bool value = await FirebaseFireStoreHelper.instance
+                      .uploadOrderProductFirebase(
+                    appProvider.getBuyProductList,
+                    context,
+                    "Cash on Delivery",
+                  );
+                  appProvider.clearBuyProduct();
+                  if (value) {
+                    Future.delayed(const Duration(seconds: 2), () {
+                      Routes.push(
+                          context: context, page: const CustomBottomNavbar());
+                    });
+                  }
+                }else{
+                  int value=double.parse(appProvider.totalBuyProductList().toString()).round().toInt();
+                  String totalPrice=(value * 100).toString();
+
+                 await StripeHelper.instance.makePayment(context, totalPrice.toString());
+
                 }
+
+
               },
             )
           ],

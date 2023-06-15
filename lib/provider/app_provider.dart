@@ -93,6 +93,17 @@ class AppProvider with ChangeNotifier {
     return totalPrice;
   }
 
+  double totalBuyProductList(){
+    double totalPrice=0.0;
+
+    for(var element in _buyProductList){
+
+      double price= double.parse(element.price);
+      totalPrice+=price* element.qty!;
+    }
+    return totalPrice;
+  }
+
 
   updateQty(ProductModel productModel,int qty){
     int index=_cartProductList.indexOf(productModel);

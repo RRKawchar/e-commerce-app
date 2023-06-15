@@ -18,7 +18,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   @override
   Widget build(BuildContext context) {
-    AppProvider appProvider=Provider.of<AppProvider>(context);
+    AppProvider appProvider = Provider.of<AppProvider>(context);
     return Scaffold(
         bottomNavigationBar: SizedBox(
           height: 150,
@@ -26,39 +26,62 @@ class _CartScreenState extends State<CartScreen> {
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
-                 Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const CustomText(text: 'Total',fontWeight: FontWeight.bold,size: 18,),
-                    CustomText(text: '\$${appProvider.totalPrice().toString()}',fontWeight: FontWeight.bold,size: 18,),
+                    const CustomText(
+                      text: 'Total',
+                      fontWeight: FontWeight.bold,
+                      size: 18,
+                    ),
+                    CustomText(
+                      text: '\$${appProvider.totalPrice().toString()}',
+                      fontWeight: FontWeight.bold,
+                      size: 18,
+                    ),
                   ],
                 ),
-                const SizedBox(height: 24.0,),
-                PrimaryButton(title: "CheckOut",onPressed: (){
-                  appProvider.clearBuyProduct();
-                  appProvider.addBuyProductCartList();
-                  appProvider.clearCart();
-                  if(appProvider.getBuyProductList.isEmpty){
-                    showMessage(message: "Cart is Empty!!");
-                  }else{
-                    Routes.push(context: context, page:  const CartItemCheckOut());
-                  }
-
-                },)
+                const SizedBox(
+                  height: 24.0,
+                ),
+                PrimaryButton(
+                  title: "CheckOut",
+                  onPressed: () {
+                    appProvider.clearBuyProduct();
+                    appProvider.addBuyProductCartList();
+                    appProvider.clearCart();
+                    if (appProvider.getBuyProductList.isEmpty) {
+                      showMessage(message: "Cart is Empty!!");
+                    } else {
+                      Routes.push(
+                          context: context, page: const CartItemCheckOut());
+                    }
+                  },
+                )
               ],
             ),
           ),
         ),
-      appBar: AppBar(
-        title: const CustomText(text: 'Cart Screen',size: 20,),
-        centerTitle: true,
-      ),
-      body:appProvider.catProviderList.isEmpty?const Center(child: CustomText(text: "Empty",),): ListView.builder(
-          padding: const EdgeInsets.all(12.0),
-          itemCount: appProvider.catProviderList.length,
-          itemBuilder: (context,index){
-            return  SingleCartItems(productModel: appProvider.catProviderList[index],);
-          })
-    );
+        appBar: AppBar(
+          title: const CustomText(
+            text: 'Cart Screen',
+            size: 20,
+          ),
+          centerTitle: true,
+        ),
+        body: appProvider.catProviderList.isEmpty
+            ? const Center(
+                child: CustomText(
+                  text: "Empty",
+                ),
+              )
+            : ListView.builder(
+                padding: const EdgeInsets.all(12.0),
+                itemCount: appProvider.catProviderList.length,
+                itemBuilder: (context, index) {
+                  return SingleCartItems(
+                    productModel: appProvider.catProviderList[index],
+                  );
+                }));
   }
 }
