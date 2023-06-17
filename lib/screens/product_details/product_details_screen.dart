@@ -1,11 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:e_commerce_app/constants/constants.dart';
 import 'package:e_commerce_app/constants/routes.dart';
 import 'package:e_commerce_app/model/product_model/product_model.dart';
 import 'package:e_commerce_app/provider/app_provider.dart';
 import 'package:e_commerce_app/screens/cart_screen/cart_screen.dart';
 import 'package:e_commerce_app/screens/check_out/check_out_screen.dart';
-import 'package:e_commerce_app/screens/favourite/favorite_screen.dart';
 import 'package:e_commerce_app/widgets/custom_network_image/custom_network_image.dart';
 import 'package:e_commerce_app/widgets/custom_text/custom_text.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,6 +88,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ))
                 ],
               ),
+              CustomText(text: "Price : \$${widget.productModel.price}",fontWeight: FontWeight.bold,color: Colors.amber,),
               const SizedBox(
                 height: 12.0,
               ),

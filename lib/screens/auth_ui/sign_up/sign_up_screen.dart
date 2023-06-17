@@ -33,11 +33,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: kToolbarHeight,
               ),
               const TopTitle(
-                  title: 'Create Account', subtitle: "Welcome to E-Commerce"),
+                  title: 'Create Account', subtitle: "Welcome to our Tech Stacks App"),
               const SizedBox(
                 height: 12,
               ),

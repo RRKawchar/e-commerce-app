@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: kToolbarHeight,),
               const TopTitle(
-                  title: 'Login', subtitle: "Welcome Back to E-Commerce app"),
+                  title: 'Login', subtitle: "Welcome Back to our Tech Stacks App"),
               const SizedBox(
                 height: 12,
               ),

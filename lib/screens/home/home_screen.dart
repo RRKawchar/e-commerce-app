@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     getCategories();
-    AppProvider provider=Provider.of<AppProvider>(context,listen: false);
+    AppProvider provider = Provider.of<AppProvider>(context, listen: false);
     provider.getUserInfoFirebase();
     super.initState();
   }
@@ -40,11 +40,20 @@ class _HomeScreenState extends State<HomeScreen> {
     categoriesList.shuffle();
     productList = await FirebaseFireStoreHelper.instance.getPopularProduct();
     productList.shuffle();
-   setState(() {
-     isLoading = false;
-   });
+    setState(() {
+      isLoading = false;
+    });
+  }
 
+  TextEditingController searchController = TextEditingController();
+  List<ProductModel> searchList = [];
 
+  void searchProduct(String value) {
+    searchList = productList
+        .where((element) =>
+            element.name.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+    setState(() {});
   }
 
   @override
@@ -64,10 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const TopTitle(
-                          title: "Shopping Here",
+                          title: "Tech Stacks",
                           subtitle: "",
                         ),
                         TextFormField(
+                          controller: searchController,
+                          onChanged: (String value) {
+                            searchProduct(value);
+                          },
                           decoration:
                               const InputDecoration(hintText: "Search...."),
                         )
@@ -112,39 +125,69 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(
                       height: 15,
                     ),
-                    const CustomText(
-                      text: 'Popular Products',
-                      size: 18,
-                      fontWeight: FontWeight.w500,
-                    ),
+                    !isSearch()
+                        ? const CustomText(
+                            text: 'Popular Products',
+                            size: 18,
+                            fontWeight: FontWeight.w500,
+                          )
+                        : const CustomText(
+                            text: 'Search Products',
+                            size: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                     SizedBox(
                       height: productList.isEmpty ? 50 : 12,
                     ),
 
                     /// Popular Products.............................
 
-                    productList.isEmpty
+                    searchController.text.isNotEmpty && searchList.isEmpty
                         ? const Center(
                             child: CustomText(
-                              text: "Popular Product is Empty!!",
+                              text: "No Product Found",
                             ),
                           )
-                        : GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: productList.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisExtent: 230,
-                                    crossAxisSpacing: 5,
-                                    mainAxisSpacing: 5),
-                            itemBuilder: (context, index) {
-                              ProductModel product = productList[index];
-                              return PopularProductWidget(
-                                productModel: product,
-                              );
-                            }),
+                        : searchList.isNotEmpty
+                            ? GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: searchList.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
+                                        mainAxisExtent: 230,
+                                        crossAxisSpacing: 5,
+                                        mainAxisSpacing: 5),
+                                itemBuilder: (context, index) {
+                                  ProductModel product = searchList[index];
+                                  return PopularProductWidget(
+                                    productModel: product,
+                                  );
+                                })
+                            : productList.isEmpty
+                                ? const Center(
+                                    child: CustomText(
+                                      text: "Popular Product is Empty!!",
+                                    ),
+                                  )
+                                : GridView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    itemCount: productList.length,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 2,
+                                            mainAxisExtent: 230,
+                                            crossAxisSpacing: 5,
+                                            mainAxisSpacing: 5),
+                                    itemBuilder: (context, index) {
+                                      ProductModel product = productList[index];
+                                      return PopularProductWidget(
+                                        productModel: product,
+                                      );
+                                    }),
                     const SizedBox(
                       height: 12.0,
                     ),
@@ -153,5 +196,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
       ),
     );
+  }
+
+  bool isSearch() {
+    if (searchController.text.isNotEmpty && searchList.isEmpty) {
+      return true;
+    } else if (searchController.text.isEmpty && searchList.isNotEmpty) {
+      return false;
+    } else if (searchList.isNotEmpty) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
